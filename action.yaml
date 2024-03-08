@@ -1,0 +1,93 @@
+name: svu
+author: charlesthomas
+description: use https://github.com/caarlos0/svu to calculate the next semantic version for your repo by reading the commit log
+inputs:
+  cmd:
+    description: |-
+      svu sub-command
+      options:
+        next: prints the next version based on the git log
+        major: new major version
+        minor: new minor version
+        current: prints current version
+        prerelease: new pre release version based on the next version calculated from git log
+      this github action will always run current and provide its value as an output.
+      if cmd is set to current, that is all it will do.
+      in all other cases, the specified sub-command will also be run and output as "next."
+    required: false
+    default: "next"
+  fetch-tags:
+    description: |-
+      run `git fetch --tags` before running `svu`
+      recommended unless you explicitly run it yourself in a prior step
+    required: false
+    default: true
+  push-tag:
+    description: |-
+      run `git tag $next && git push --tags` where `$next` is the value calculated by svu
+      if the calulated new version and `svu current` are the same, nothing is pushed
+  pattern:
+    description: |-
+      --pattern=PATTERN svu flag
+      "limits calculations to be based on tags matching the given pattern"
+    required: false
+  prefix:
+    description: |-
+      --prefix svu flag
+      "set a custom prefix"
+      svu defaults to "v" so this action does, too
+      to not use it at all, set strip-prefix to true
+    required: false
+    default: "v"
+  strip-prefix:
+    description: |-
+      --strip-prefix svu flag
+      "strips the prefix from the tag"
+    required: false
+    default: false
+  build:
+    description: |-
+      --build=BUILD svu flag
+      "adds a build suffix to the version, without the semver mandatory plug prefix"
+    required: false
+    default: ""
+  directory:
+    description: |-
+      --directory svu flag
+      "specifies directory to filter commit messages by"
+    required: false
+    default: ""
+  tag-mode:
+    description: |-
+      --tag-mode svu flag
+      "determines if latest tag of the current or all branches will be used"
+    required: false
+    default: "current-branch"
+  force-patch-increment:
+    description: |-
+      --force-patch-increment svu flag
+      "forces a patch version increment regardless of the commit message content"
+      only valid if cmd is `next`
+    required: false
+    default: false 
+  pre-release:
+    description: |-
+      --pre-release=PRE-RELEASE svu flag
+      "adds a pre-release suffix to the version, without the semver mandatory dash prefix"
+      only valid if cmd is `prerelease`
+outputs:
+  current:
+    description: |-
+      the output of `svu current` before runing `svu $cmd`, eg `svu next`
+  next:
+    description: |-
+      the next version, if any cmd other than `current` was used
+      eg `svu next`, `svu prerelease`, `svu major`, etc
+  changed:
+    description: |-
+      whether the next version calculated by `svu $cmd` matches `svu current`
+      useful if you use `svu next` without `--force-patch-increment`
+      and push the tag yourself outside of this step
+runs:
+  using: docker
+  image: 'Dockerfile'
