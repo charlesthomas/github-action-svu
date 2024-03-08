@@ -1,0 +1,51 @@
+#!/bin/bash
+set -e
+
+if [[ "${INPUT_FETCH-TAGS}" == "true" ]]; then
+    git fetch --tags
+fi
+
+CURRENT=$(/bin/svu current)
+echo "current=${CURRENT}" >> "$GITHUB_OUTPUT"
+if [[ "${INPUT_CMD}" == "current" ]]; then
+    echo "next=${CURRENT}" >> "$GITHUB_OUTPUT"
+    echo "changed=false" >> "$GITHUB_OUTPUT"
+    exit 0
+fi
+
+ARGS=""
+if [[ "${INPUT_PATTERN}" != "" ]]; then
+    ARGS="${ARGS} --pattern=${INPUT_PATTERN}"
+fi
+if [[ "${INPUT_PREFIX}" != "" ]] && [[ "${INPUT_PREFIX}" != "v" ]]; then
+    ARGS="${ARGS} --prefix=${INPUT_PREFIX}"
+fi
+if [[ "${INPUT_BUILD}" != "" ]]; then
+    ARGS="${ARGS} --build=${INPUT_BUILD}"
+fi
+if [[ "${INPUT_DIRECTORY}" != "" ]]; then
+    ARGS="${ARGS} --directory=${INPUT_DIRECTORY}"
+fi
+if [[ "${INPUT_TAG-MODE}" != "" ]] && [[ "${INPUT_TAG-MODE}" != "current-branch" ]]; then
+    ARGS="${ARGS} --tag-mode=${INPUT_TAG-MODE}"
+fi
+
+if [[ "${INPUT_CMD}" == "next" ]] && [[ "${INPUT_FORCE-PATCH-INCREMENT}" == "true" ]]; then
+    ARGS="${ARGS} --force-patch-increment"
+fi
+if [[ "${INPUT_CMD}" == "prerelease" ]] && [[ "${INPUT_PRE-RELEASE}" == "" ]]; then
+    ARGS="${ARGS} --pre-release=${INPUT_PRE-RELEASE}"
+fi
+
+NEXT=$(/bin/svu ${INPUT_CMD} ${ARGS})
+echo "next=${NEXT}" >> "$GITHUB_OUTPUT"
+if [[ "${NEXT}" == "${CURRENT}" ]]; then
+    echo "changed=false" >> "$GITHUB_OUTPUT"
+else
+    echo "changed=true" >> "$GITHUB_OUTPUT"
+    if [[ "${INPUT_PUSH-TAGS}" == "true" ]]; then
+        git tag "${NEXT}"
+        git push --tags
+    fi
+fi
+
