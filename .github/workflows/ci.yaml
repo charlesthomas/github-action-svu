@@ -13,40 +13,28 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-      - name: checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
       - name: Set SVU_VERSION from go.mod
         run: |
           echo "SVU_VERSION=$(grep svu go.mod | tail -1 | rev | cut -f 1 -d ' ' | rev | tr -d v)" >> "$GITHUB_ENV"
 
       - name: svu
         id: svu
-        uses: obfu5c8/action-svu@v1
+        uses: charlesthomas/github-action-svu@v0.14.0-1.12.0
         with:
-          force-increment: true
+          clone: true
+          pushTag: true
           suffix: ${{ env.SVU_VERSION }}
-
-      - name: tag
-        uses: actions/github-script@v6
-        with:
-          script: |
-            github.rest.git.createRef({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              ref: `refs/tags/${{ steps.svu.outputs.version }}`,
-              sha: context.sha
-            })
 
       - name: Set up qemu
         uses: docker/setup-qemu-action@v3
+        if: ${{ steps.svu.outputs.changed }} == 'true'
       - name: Set up Docker buildx
         uses: docker/setup-buildx-action@v3
+        if: ${{ steps.svu.outputs.changed }} == 'true'
 
       - name: registry auth
         uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
+        if: ${{ steps.svu.outputs.changed }} == 'true'
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
@@ -55,6 +43,7 @@ jobs:
       - name: image metadata
         id: meta
         uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
+        if: ${{ steps.svu.outputs.changed }} == 'true'
         with:
           flavor: |
             latest=true
@@ -64,6 +53,7 @@ jobs:
 
       - name: build & push image
         uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
+        if: ${{ steps.svu.outputs.changed }} == 'true'
         with:
           build-args: SVU_VERSION=${{ env.SVU_VERSION }}
           context: .
@@ -73,6 +63,7 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
 
       - name: github release
+        if: ${{ steps.svu.outputs.changed }} == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
