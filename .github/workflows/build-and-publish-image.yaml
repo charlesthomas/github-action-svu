@@ -23,7 +23,7 @@ jobs:
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
-          password: ${{ env.TEMP_PULL_TOKEN }}
+          password: ${{ secrets.TEMP_PULL_TOKEN }}
 
       - name: svu
         id: svu
