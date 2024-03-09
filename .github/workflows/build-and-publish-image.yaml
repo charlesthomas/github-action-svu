@@ -18,13 +18,6 @@ jobs:
           echo "SVU_VERSION=$(grep svu go.mod | tail -1 | rev | cut -f 1 -d ' ' | rev | tr -d v)" >> "$GITHUB_ENV"
           echo "ALPHA=$(date +%F-%T)" >> "$GITHUB_TOKEN"
 
-      - name: registry auth
-        uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.TEMP_PULL_TOKEN }}
-
       - name: svu
         id: svu
         uses: charlesthomas/svu@v0.1.0-1.12.0
