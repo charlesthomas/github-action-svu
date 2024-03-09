@@ -52,7 +52,7 @@ inputs:
       "strips the prefix from the tag"
     required: false
     default: false
-  build:
+  buildMetadata:
     description: |-
       --build=BUILD svu flag
       "adds a build suffix to the version, without the semver mandatory plug prefix"

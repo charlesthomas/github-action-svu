@@ -26,8 +26,8 @@ fi
 if [[ "${INPUT_PREFIX}" != "" ]] && [[ "${INPUT_PREFIX}" != "v" ]]; then
     ARGS="${ARGS} --prefix=${INPUT_PREFIX}"
 fi
-if [[ "${INPUT_BUILD}" != "" ]]; then
-    ARGS="${ARGS} --build=${INPUT_BUILD}"
+if [[ "${INPUT_BUILDMETADATA}" != "" ]]; then
+    ARGS="${ARGS} --build=${INPUT_BUILDMETADATA}"
 fi
 if [[ "${INPUT_DIRECTORY}" != "" ]]; then
     ARGS="${ARGS} --directory=${INPUT_DIRECTORY}"
