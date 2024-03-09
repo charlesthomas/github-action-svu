@@ -23,9 +23,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
+          build: ${{ env.SVU_VERSION }}
           clone: true
           pushTag: true
-          build: ${{ env.SVU_VERSION }}
 
       - name: Set up qemu
         uses: docker/setup-qemu-action@v3
