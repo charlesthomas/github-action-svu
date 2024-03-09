@@ -13,10 +13,15 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
+      - name: checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
       - name: Set SVU_VERSION from go.mod
         run: |
           echo "SVU_VERSION=$(grep svu go.mod | tail -1 | rev | cut -f 1 -d ' ' | rev | tr -d v)" >> "$GITHUB_ENV"
-          echo "ALPHA=$(date +%F-%t)" >> "$GITHUB_ENV"
+          echo "ALPHA=$(date +%F-%T)" >> "$GITHUB_ENV"
 
       - name: svu
         id: svu
