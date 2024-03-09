@@ -13,6 +13,9 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
+      - name: checkout
+        uses: actions/checkout@v4
+
       - name: Set SVU_VERSION from go.mod
         run: |
           echo "SVU_VERSION=$(grep svu go.mod | tail -1 | rev | cut -f 1 -d ' ' | rev | tr -d v)" >> "$GITHUB_ENV"
@@ -24,8 +27,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           build: ${{ env.SVU_VERSION }}
-          clone: true
           pushTag: true
+          unshallow: true
 
       - name: Set up qemu
         uses: docker/setup-qemu-action@v3
