@@ -20,7 +20,7 @@ jobs:
 
       - name: svu
         id: svu
-        uses: charlesthomas/svu@v0.1.0-1.12.0
+        uses: charlesthomas/svu@v0.2.0-1.12.0
         with:
           cmd: prerelease
           force-increment: true
