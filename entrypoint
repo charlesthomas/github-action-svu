@@ -39,7 +39,7 @@ fi
 if [[ "${INPUT_CMD}" == "next" ]] && [[ "${INPUT_FORCEPATCHINCREMENT}" == "true" ]]; then
     ARGS="${ARGS} --force-patch-increment"
 fi
-if [[ "${INPUT_CMD}" == "prerelease" ]] && [[ "${INPUT_PRERELEASE}" == "" ]]; then
+if [[ "${INPUT_CMD}" == "prerelease" ]] && [[ "${INPUT_PRERELEASE}" != "" ]]; then
     ARGS="${ARGS} --pre-release=${INPUT_PRERELEASE}"
 fi
 
