@@ -1,6 +1,10 @@
 #!/bin/bash
 set -ex
 
+# /github/workspace is where github actions always mounts the repo
+# it can't be changed, and this is required to prevent svu from throwing errors
+git config --global --add safe.directory /github/workspace
+
 if [[ "${INPUT_FETCH-TAGS}" == "true" ]]; then
     echo "fetching tags"
     git fetch --tags
