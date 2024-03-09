@@ -20,10 +20,12 @@ jobs:
       - name: svu
         id: svu
         uses: charlesthomas/github-action-svu@v0.14.0-1.12.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           clone: true
           pushTag: true
-          suffix: ${{ env.SVU_VERSION }}
+          build: ${{ env.SVU_VERSION }}
 
       - name: Set up qemu
         uses: docker/setup-qemu-action@v3
