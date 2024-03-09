@@ -6,8 +6,7 @@ set -ex
 git config --global --add safe.directory /github/workspace
 
 if [[ "${INPUT_FETCHTAGS}" == "true" ]]; then
-    echo "fetching tags"
-    git fetch --tags
+    git fetch --unshallow
 fi
 
 CURRENT=$(/bin/svu current)
