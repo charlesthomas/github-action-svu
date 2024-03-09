@@ -16,12 +16,19 @@ inputs:
       in all other cases, the specified sub-command will also be run and output as "next."
     required: false
     default: "next"
-  fetchTags:
+  clone:
     description: |-
-      run `git fetch --tags` before running `svu`
-      recommended unless you explicitly run it yourself in a prior step
+      git clone the repo before running svu
+      unnecessary if you use actions/checkout ahead of this in your workflow
     required: false
-    default: true
+    default: false
+  unshallow:
+    description: |-
+      run `git fetch --unshallow` before running `svu`
+      useful if you use actions/checkout ahead of this in your workflow with the default depth
+      ignored if clone is true
+    required: false
+    default: false
   pushTag:
     description: |-
       run `git tag $next && git push --tags` where `$next` is the value calculated by svu

@@ -1,14 +1,14 @@
 #!/bin/bash
-set -ex
+set -e
 
 # /github/workspace is where github actions always mounts the repo
 # it can't be changed, and this is required to prevent svu from throwing errors
 git config --global --add safe.directory /github/workspace
 
-if [[ "${INPUT_FETCHTAGS}" == "true" ]]; then
-    git fetch --unshallow
-else
+if [[ "${INPUT_CLONE}" == "true" ]]; then
     git clone https://github.com/${GITHUB_REPOSITORY} .
+elif [[ "${INPUT_UNSHALLOW}" == "true" ]]; then
+    git fetch --unshallow
 fi
 
 CURRENT=$(/bin/svu current)
@@ -33,7 +33,7 @@ if [[ "${INPUT_DIRECTORY}" != "" ]]; then
     ARGS="${ARGS} --directory=${INPUT_DIRECTORY}"
 fi
 if [[ "${INPUT_TAGMODE}" != "" ]] && [[ "${INPUT_TAGMODE}" != "current-branch" ]]; then
-    ARGS="${ARGS} --tag-mode=${INPUT_TAG-MODE}"
+    ARGS="${ARGS} --tag-mode=${INPUT_TAGMODE}"
 fi
 
 if [[ "${INPUT_CMD}" == "next" ]] && [[ "${INPUT_FORCEPATCHINCREMENT}" == "true" ]]; then
