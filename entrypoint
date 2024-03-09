@@ -1,7 +1,8 @@
 #!/bin/bash
-set -e
+set -ex
 
 if [[ "${INPUT_FETCH-TAGS}" == "true" ]]; then
+    echo "fetching tags"
     git fetch --tags
 fi
 
