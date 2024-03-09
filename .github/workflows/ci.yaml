@@ -7,7 +7,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: charlesthomas/svu
+  IMAGE_NAME: ${{ github.repository }}
 
 jobs:
   release:
@@ -16,15 +16,25 @@ jobs:
       - name: Set SVU_VERSION from go.mod
         run: |
           echo "SVU_VERSION=$(grep svu go.mod | tail -1 | rev | cut -f 1 -d ' ' | rev | tr -d v)" >> "$GITHUB_ENV"
+          echo "ALPHA=$(date +%F-%t)" >> "$GITHUB_ENV"
 
       - name: svu
         id: svu
-        uses: charlesthomas/github-action-svu@v0.3.2-1.12.0
+        uses: obfu5c8/action-svu@v1
         with:
-          cmd: next
           force-increment: true
-          push-tag: true
-          build: ${{ env.SVU_VERSION }}
+          suffix: ${{ env.SVU_VERSION }}-alpha${{ env.ALPHA }}
+
+      - name: tag
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: `refs/tags/${{ steps.svu.outputs.version }}`,
+              sha: context.sha
+            })
 
       - name: Set up qemu
         uses: docker/setup-qemu-action@v3
