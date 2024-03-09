@@ -5,7 +5,7 @@ set -ex
 # it can't be changed, and this is required to prevent svu from throwing errors
 git config --global --add safe.directory /github/workspace
 
-if [[ "${INPUT_FETCH-TAGS}" == "true" ]]; then
+if [[ "${INPUT_FETCHTAGS}" == "true" ]]; then
     echo "fetching tags"
     git fetch --tags
 fi
@@ -31,15 +31,15 @@ fi
 if [[ "${INPUT_DIRECTORY}" != "" ]]; then
     ARGS="${ARGS} --directory=${INPUT_DIRECTORY}"
 fi
-if [[ "${INPUT_TAG-MODE}" != "" ]] && [[ "${INPUT_TAG-MODE}" != "current-branch" ]]; then
+if [[ "${INPUT_TAGMODE}" != "" ]] && [[ "${INPUT_TAGMODE}" != "current-branch" ]]; then
     ARGS="${ARGS} --tag-mode=${INPUT_TAG-MODE}"
 fi
 
-if [[ "${INPUT_CMD}" == "next" ]] && [[ "${INPUT_FORCE-PATCH-INCREMENT}" == "true" ]]; then
+if [[ "${INPUT_CMD}" == "next" ]] && [[ "${INPUT_FORCEPATCHINCREMENT}" == "true" ]]; then
     ARGS="${ARGS} --force-patch-increment"
 fi
-if [[ "${INPUT_CMD}" == "prerelease" ]] && [[ "${INPUT_PRE-RELEASE}" == "" ]]; then
-    ARGS="${ARGS} --pre-release=${INPUT_PRE-RELEASE}"
+if [[ "${INPUT_CMD}" == "prerelease" ]] && [[ "${INPUT_PRERELEASE}" == "" ]]; then
+    ARGS="${ARGS} --pre-release=${INPUT_PRERELEASE}"
 fi
 
 NEXT=$(/bin/svu ${INPUT_CMD} ${ARGS})
@@ -48,9 +48,8 @@ if [[ "${NEXT}" == "${CURRENT}" ]]; then
     echo "changed=false" >> "$GITHUB_OUTPUT"
 else
     echo "changed=true" >> "$GITHUB_OUTPUT"
-    if [[ "${INPUT_PUSH-TAGS}" == "true" ]]; then
+    if [[ "${INPUT_PUSHTAGS}" == "true" ]]; then
         git tag "${NEXT}"
         git push --tags
     fi
 fi
-

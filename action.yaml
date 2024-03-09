@@ -16,13 +16,13 @@ inputs:
       in all other cases, the specified sub-command will also be run and output as "next."
     required: false
     default: "next"
-  fetch-tags:
+  fetchTags:
     description: |-
       run `git fetch --tags` before running `svu`
       recommended unless you explicitly run it yourself in a prior step
     required: false
     default: true
-  push-tag:
+  pushTag:
     description: |-
       run `git tag $next && git push --tags` where `$next` is the value calculated by svu
       if the calulated new version and `svu current` are the same, nothing is pushed
@@ -39,7 +39,7 @@ inputs:
       to not use it at all, set strip-prefix to true
     required: false
     default: "v"
-  strip-prefix:
+  stripPrefix:
     description: |-
       --strip-prefix svu flag
       "strips the prefix from the tag"
@@ -57,20 +57,20 @@ inputs:
       "specifies directory to filter commit messages by"
     required: false
     default: ""
-  tag-mode:
+  tagMode:
     description: |-
       --tag-mode svu flag
       "determines if latest tag of the current or all branches will be used"
     required: false
     default: "current-branch"
-  force-patch-increment:
+  forcePatchIncrement:
     description: |-
       --force-patch-increment svu flag
       "forces a patch version increment regardless of the commit message content"
       only valid if cmd is `next`
     required: false
     default: false 
-  pre-release:
+  preRelease:
     description: |-
       --pre-release=PRE-RELEASE svu flag
       "adds a pre-release suffix to the version, without the semver mandatory dash prefix"
