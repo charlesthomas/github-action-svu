@@ -1,9 +1,9 @@
-name: Build and Publish Image Test
+name: Build and Publish Image
 
 on:
   push:
     branches:
-      - ci
+      - main
 
 env:
   REGISTRY: ghcr.io
