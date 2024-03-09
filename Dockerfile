@@ -11,4 +11,6 @@ RUN apt-get update \
  && apt-get install --no-install-suggests --no-install-recommends --yes ca-certificates git openssl
 COPY --from=builder /bin/svu /bin/svu
 COPY entrypoint /bin/entrypoint
+COPY askpass /bin/askpass
+ENV GIT_ASKPASS=/bin/askpass
 ENTRYPOINT ["/bin/entrypoint"]
