@@ -10,5 +10,5 @@ FROM debian:bookworm-slim
 RUN apt-get update \
  && apt-get install --no-install-suggests --no-install-recommends --yes git
 COPY --from=builder /bin/svu /bin/svu
-COPY entrypoint entrypoint
-ENTRYPOINT ["entrypoint"]
+COPY entrypoint /bin/entrypoint
+ENTRYPOINT ["/bin/entrypoint"]
