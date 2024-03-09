@@ -21,14 +21,13 @@ jobs:
       - name: Set SVU_VERSION from go.mod
         run: |
           echo "SVU_VERSION=$(grep svu go.mod | tail -1 | rev | cut -f 1 -d ' ' | rev | tr -d v)" >> "$GITHUB_ENV"
-          echo "ALPHA=$(date +%Y%m%d%H%M%S)" >> "$GITHUB_ENV"
 
       - name: svu
         id: svu
         uses: obfu5c8/action-svu@v1
         with:
           force-increment: true
-          suffix: ${{ env.SVU_VERSION }}-alpha${{ env.ALPHA }}
+          suffix: ${{ env.SVU_VERSION }}
 
       - name: tag
         uses: actions/github-script@v6
@@ -72,3 +71,9 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+      - name: github release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create ${{ steps.svu.outputs.version }}
