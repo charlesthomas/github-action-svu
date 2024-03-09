@@ -49,7 +49,7 @@ if [[ "${NEXT}" == "${CURRENT}" ]]; then
     echo "changed=false" >> "$GITHUB_OUTPUT"
 else
     echo "changed=true" >> "$GITHUB_OUTPUT"
-    if [[ "${INPUT_PUSHTAGS}" == "true" ]]; then
+    if [[ "${INPUT_PUSHTAG}" == "true" ]]; then
         git tag "${NEXT}"
         git push --tags
     fi
