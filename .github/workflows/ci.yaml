@@ -54,7 +54,7 @@ jobs:
             type=raw,enable=true,value=${{ steps.svu.outputs.version }}
 
       - name: build & push image
-        uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
+        uses: docker/build-push-action@2a7db1d68aab1a514ba647f39bcde60888a1753f
         if: ${{ steps.svu.outputs.changed }} == 'true'
         with:
           build-args: SVU_VERSION=${{ env.SVU_VERSION }}
