@@ -76,7 +76,7 @@ inputs:
       "forces a patch version increment regardless of the commit message content"
       only valid if cmd is `next`
     required: false
-    default: false 
+    default: false
   preRelease:
     description: |-
       --pre-release=PRE-RELEASE svu flag
@@ -97,4 +97,4 @@ outputs:
       and push the tag yourself outside of this step
 runs:
   using: docker
-  image: docker://ghcr.io/charlesthomas/github-action-svu:latest
+  image: docker://ghcr.io/charlesthomas/github-action-svu:v0.15.0+1.12.0
