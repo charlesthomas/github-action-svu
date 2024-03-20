@@ -18,6 +18,10 @@ jobs:
         with:
           depth: 0
 
+      - name: Set SVU_VERSION from go.mod
+        run: |
+          echo "SVU_VERSION=$(grep svu go.mod | tail -1 | rev | cut -f 1 -d ' ' | rev | tr -d v)" >> "$GITHUB_ENV"
+
       - name: svu
         id: svu
         uses: charlesthomas/github-action-svu@v0.14.0-1.12.0
