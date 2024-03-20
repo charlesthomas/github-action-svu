@@ -1,4 +1,4 @@
-name: svu
+name: github-action-svu
 author: charlesthomas
 description: use https://github.com/caarlos0/svu to calculate the next semantic version for your repo by reading the commit log
 inputs:
