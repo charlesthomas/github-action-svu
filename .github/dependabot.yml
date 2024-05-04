@@ -4,9 +4,11 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+      day: "friday"
     allow:
       - dependency-type: "direct"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
+      day: "friday"
