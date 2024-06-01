@@ -7,7 +7,7 @@ action.yaml: tmp/next ## update image version in action.yaml
 	yq -i '.runs.image="docker://ghcr.io/charlesthomas/github-action-svu:$(shell cat tmp/next | tr + -)"' action.yaml
 
 build-image: tmp/current ## build docker image
-	docker build -t ghcr.io/charlesthomas/github-action-svu:$(shell cat tmp/current) .
+	docker build -t ghcr.io/charlesthomas/github-action-svu:$(shell cat tmp/current | tr + -) .
 
 tag: action.yaml ## use svu next to make a new tag and push it
 	git add action.yaml
