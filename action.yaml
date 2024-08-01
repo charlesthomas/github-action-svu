@@ -97,4 +97,4 @@ outputs:
       and push the tag yourself outside of this step
 runs:
   using: docker
-  image: docker://ghcr.io/charlesthomas/github-action-svu:v1.0.3-2.0.1
+  image: docker://ghcr.io/charlesthomas/github-action-svu:v1.0.4-2.1.0
