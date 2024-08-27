@@ -5,7 +5,7 @@ module github.com/charlesthomas/github-action-svu
 
 go 1.22.0
 
-require github.com/caarlos0/svu/v2 v2.1.1
+require github.com/caarlos0/svu/v2 v2.2.0
 
 require (
 	github.com/Masterminds/semver/v3 v3.2.1 // indirect

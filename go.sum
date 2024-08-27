@@ -10,6 +10,8 @@ github.com/caarlos0/svu/v2 v2.1.0 h1:pr7lmsBG4SpwaxL1rwmol8Atj2DX0GQ5BfY0uYwwnOY
 github.com/caarlos0/svu/v2 v2.1.0/go.mod h1:rMbsHPy1gf6/65xQQmtitgkRzCGkHhylVfZ2IGLR3LQ=
 github.com/caarlos0/svu/v2 v2.1.1 h1:8bmzoV+u8suS1PsEsFyugeqn7GdEBZRhBH3eDluc6mA=
 github.com/caarlos0/svu/v2 v2.1.1/go.mod h1:rMbsHPy1gf6/65xQQmtitgkRzCGkHhylVfZ2IGLR3LQ=
+github.com/caarlos0/svu/v2 v2.2.0 h1:Unut8r8WkCOiNe/NN7ryUT1ZeweRp5IVtZQZMaIPAQs=
+github.com/caarlos0/svu/v2 v2.2.0/go.mod h1:rMbsHPy1gf6/65xQQmtitgkRzCGkHhylVfZ2IGLR3LQ=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/gobwas/glob v0.2.3 h1:A4xDbljILXROh+kObIiy5kIaPYD8e96x1tgBhUI5J+Y=
