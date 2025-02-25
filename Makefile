@@ -27,7 +27,7 @@ tmp/current: tmp/
 
 .PHONY: tmp/next
 tmp/next: tmp/svu
-	svu next --force-patch-increment --build $(shell cat tmp/svu) > $(@)
+	svu next --always --metadata $(shell cat tmp/svu) > $(@)
 
 tmp/svu: tmp/
-	grep svu go.mod | tail -1 | cut -f 3 -d ' ' | tr -d v > $(@)
+	head -1 VERSION > $(@)

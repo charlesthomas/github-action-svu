@@ -2,9 +2,7 @@
 
 GitHub Action for calculating Semantic Versions using [caarlos0/svu](https://github.com/caarlos0/svu)
 
-I couldn't find a GitHub Action for `svu` that looked like it was being maintained, so I made one myself. I also put a dummy `go.mod` and `go.sum` file in the repo and then told dependabot to watch it for updates. My hope is that I made it easy enough to maintain that I won't be another unmaintaned `svu` Action.
-
-All of the tooling in this repo scrapes the `svu` version directly out of that `go.mod` file, so it is the source of truth for what `svu` version is available from this action. To drive the point home, it's also included as build metadata on the versions of the Action. EG at the time of this being written, `svu` latest is `1.12.0` so this GitHub Action's version will be something like `v1.0.0+1.12.0`
+I couldn't find a GitHub Action for `svu` that looked like it was being maintained, so I made one myself. My hope is that I made it easy enough to maintain that I won't be another unmaintaned `svu` Action.
 
 # Using this GitHub Action
 
@@ -33,20 +31,51 @@ This is useful if you don't want to explicitly confirm the version change and pu
 
 The `svu` sub-command (eg `next`, `current`, `major`, etc) uses the `cmd` input.
 
-### `svu` flags
+### `svu v3` flags
 
-Additionally, all flags that can be passed to `svu` exist as inputs for the Action:
+#### Global flags
 
-- `build`
-- `directory`
-- `forcePatchIncrement`
-- `pattern`
-- `prefix`
-- `preRelease`
-- `stripPrefix`
+These flags work with any of the `next` / `major` / `patch` etc commands:
+
 - `tagMode`
+- `tagPattern`
+- `tagPrefix`
+- `verbose`
+
+#### Prerelease flags
+
+Works if `cmd` is `prerelease`:
+
+- `prerelease`
+
+#### Next flags
+
+Work if `cmd` is `next`:
+
+- `always`
+- `logDirectory`
+- `metadata`
+- `prelease`
+- `v0`
 
 Full details on all tags are available in `action.yaml`
+
+### Legacy Inputs
+
+In v3 most `svu` flags were renamed. The following Inputs should still work, so that this action doesn't need a major version bump.
+
+USE CAUTION when combining v3 Inputs with legacy Inputs! v3 always takes precedence. eg if you set `build: nothing` AND `metadata: something` then the `metadata: something` will be used and `build: nothing` will be ignored
+
+- `build`
+    - becomes `metadata`
+- `directory`
+    - becomes `logDirectory`
+- `forcePatchIncrement`
+    - becomes `always`
+- `pattern`
+    - becomes `tagPattern`
+- `prefix`
+    - becomes `tagPrefix`
 
 ## Outputs
 
