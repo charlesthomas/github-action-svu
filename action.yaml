@@ -18,14 +18,12 @@ inputs:
       in all other cases, the specified sub-command will also be run and output as "next."
     required: false
     default: "next"
-
   clone:
     description: |-
       git clone the repo before running svu
       unnecessary if you use actions/checkout ahead of this in your workflow
     required: false
     default: false
-
   unshallow:
     description: |-
       run `git fetch --unshallow` before running `svu`
@@ -33,12 +31,10 @@ inputs:
       ignored if clone is true
     required: false
     default: false
-
   pushTag:
     description: |-
       run `git tag $next && git push --tags` where `$next` is the value calculated by svu
       if the calulated new version and `svu current` are the same, nothing is pushed
-
   # svu 3.0 global inputs
   tagMode:
     description: |-
@@ -49,27 +45,23 @@ inputs:
       In svu v3, the FLAG default is "all"
     required: false
     default: "current"
-
   tagPattern:
     description: |-
       svu --tag.pattern flag
       ignore tags that do not match the given pattern
     required: false
-
   tagPrefix:
     description: |-
       svu --tag.prefix flag
       sets a tag custom prefix (default "v")
     required: false
     default: "v"
-
   verbose:
     description: |-
       svu --verbose flag
       enable logs
     required: false
     default: false
-
   # svu 3.0 next inputs
   always:
     description: |-
@@ -77,63 +69,53 @@ inputs:
       if no commits trigger a version change, increment the patch
     required: false
     default: false
-
   logDirectory:
     description: |-
       svu next --log.directory flag
       only use commits that changed files in the given directories
     required: false
-
   metadata:
     description: |-
       svu next --metadata flag
       sets the version metadata
     required: false
-
   prerelease:
     description: |-
       svu prerelease --prerelease or svu next --prelease flag
       sets the version prerelease
     required: false
-
   v0:
     description: |-
       svu next --v0 flag
       prevent major version increments if current version is still v0
     required: false
     default: false
-
   # legacy inputs
   pattern:
     description: |-
       --pattern=PATTERN svu flag
       "LEGACY! Use tagPattern instead."
     required: false
-
   prefix:
     description: |-
       --prefix svu flag
       LEGACY! Use tagPrefix instead
     required: false
-
   build:
     description: |-
       --build=BUILD svu flag
       LEGACY! Use metadata instead
     required: false
-
   directory:
     description: |-
       --directory svu flag
       LEGACY! Use logDirectory instead
     required: false
-
   forcePatchIncrement:
     description: |-
       LEGACY! Use always instead
     required: false
     default: false
-
 outputs:
   current:
     description: |-
@@ -149,4 +131,4 @@ outputs:
       and push the tag yourself outside of this step
 runs:
   using: docker
-  image: docker://ghcr.io/charlesthomas/github-action-svu:v1.0.6-2.2.0
+  image: docker://ghcr.io/charlesthomas/github-action-svu:v1.1.0-3.1.0
