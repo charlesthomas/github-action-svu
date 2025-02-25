@@ -18,9 +18,9 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set SVU_VERSION from go.mod
+      - name: Set SVU_VERSION
         run: |
-          echo "SVU_VERSION=$(HEAD -1 VERSION)" >> "$GITHUB_ENV"
+          echo "SVU_VERSION=$(head -1 VERSION)" >> "$GITHUB_ENV"
 
       - name: svu
         id: svu

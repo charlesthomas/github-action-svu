@@ -27,7 +27,7 @@ tmp/current: tmp/
 
 .PHONY: tmp/next
 tmp/next: tmp/svu
-	svu next --always --metadata $(shell cat tmp/svu) > $(@)
+	svu next --metadata $(shell cat tmp/svu) > $(@)
 
 tmp/svu: tmp/
 	head -1 VERSION > $(@)
