@@ -19,8 +19,7 @@ if [[ "${INPUT_CMD}" == "current" ]]; then
     exit 0
 fi
 
-BEFORE_ARGS=""
-AFTER_ARGS=""
+ARGS=""
 
 # v3 Inputs
 
@@ -29,78 +28,76 @@ AFTER_ARGS=""
 # --tag.mode
 if [[ "${INPUT_TAGMODE}" != "all" ]] && [[ "${INPUT_TAGMODE}" != "" ]]; then
     if [[ "${INPUT_TAGMODE}" == "current-branch" ]]; then
-        BEFORE_ARGS="${BEFORE_ARGS} --tag.mode=current"
+        ARGS="${ARGS} --tag.mode=current"
     else
-        BEFORE_ARGS="${BEFORE_ARGS} --tag.mode=${INPUT_TAGMODE}"
+        ARGS="${ARGS} --tag.mode=${INPUT_TAGMODE}"
     fi
 fi
 
 # --tag.pattern
 if [[ "${INPUT_TAGPATTERN}" != "" ]]; then
-    BEFORE_ARGS="${BEFORE_ARGS} --tag.pattern=${INPUT_TAGPATTERN}"
+    ARGS="${ARGS} --tag.pattern=${INPUT_TAGPATTERN}"
 fi
 
 # --tag.prefix
 if [[ "${INPUT_TAGPREFIX}" != "v" ]] && [[ "${INPUT_TAGPREFIX}" != "" ]]; then
-    BEFORE_ARGS="${BEFORE_ARGS} --tag.prefix=${INPUT_TAGPREFIX}"
+    ARGS="${ARGS} --tag.prefix=${INPUT_TAGPREFIX}"
 fi
 
 # --verbose
 if [[ "${INPUT_VERBOSE}" == "true" ]]; then
-    BEFORE_ARGS="${BEFORE_ARGS} --verbose"
+    ARGS="${ARGS} --verbose"
 fi
 
 # cmd-specific flags
 
 # --always
 if [[ "${INPUT_CMD}" == "next" ]] && [[ "${INPUT_ALWAYS}" == "true" ]]; then
-    AFTER_ARGS="${AFTER_ARGS} --always"
+    ARGS="${ARGS} --always"
 fi
 
 # --log.directory
-if [[ "${INPUT_CMD}" == "next" ]] && [[ "${INPUT_LOGDIRECTORY}" != "" ]]; then
-    AFTER_ARGS="${AFTER_ARGS} --log.directory=${INPUT_LOGDIRECTORY}"
+if [[ "${INPUT_LOGDIRECTORY}" != "" ]] && ( [[ "${INPUT_CMD}" == "next" ]] || [[ "${INPUT_CMD}" == "prerelease" ]] ); then
+    ARGS="${ARGS} --log.directory=${LOGDIRECTORY}"
 fi
 
 # --metadata
 if [[ "${INPUT_CMD}" == "next" ]] && [[ "${INPUT_METADATA}" != "" ]]; then
-    AFTER_ARGS="${AFTER_ARGS} --metadata=${INPUT_METADATA}"
+    ARGS="${ARGS} --metadata=${METADATA}"
 fi
 
 # --prerelease
-if [[ "${INPUT_PRERELEASE}" != "" ]]; then
-    if [[ "${INPUT_CMD}" == "next" ]] || [[ "${INPUT_CMD}" == "prerelease" ]]; then
-        AFTER_ARGS="${AFTER_ARGS} --prerelease=${INPUT_PRERELEASE}"
-    fi
+if [[ "${INPUT_PRERELEASE}" != "" ]] && ( [[ "${INPUT_CMD}" == "next" ]] || [[ "${INPUT_CMD}" == "prerelease" ]] ); then
+    ARGS="${ARGS} --prerelease=${PRERELEASE}"
 fi
 
 # --v0
 if [[ "${INPUT_CMD}" == "next" ]] && [[ "${INPUT_V0}" != "false" ]]; then
-    AFTER_ARGS="${AFTER_ARGS} --v0"
+    ARGS="${ARGS} --v0"
 fi
 
 # legacy Inputs
 if [[ "${INPUT_PATTERN}" != "" ]] && [[ "${INPUT_TAGPATTERN}" == "" ]]; then
-    BEFORE_ARGS="${BEFORE_ARGS} --tag.pattern=${INPUT_PATTERN}"
+    ARGS="${ARGS} --tag.pattern=${PATTERN}"
 fi
 
 if [[ "${INPUT_PREFIX}" != "" ]] && [[ "${INPUT_PREFIX}" != "v" ]] && [[ "${INPUT_TAGPREFIX}" == "v" ]]; then
-    BEFORE_ARGS="${BEFORE_ARGS} --tag.prefix=${INPUT_PREFIX}"
+    ARGS="${ARGS} --tag.prefix=${PREFIX}"
 fi
 
 if [[ "${INPUT_BUILD}" != "" ]] && [[ "${INPUT_CMD}" == "next" ]] && [[ "${INPUT_METADATA}" == "" ]]; then
-    AFTER_ARGS="${AFTER_ARGS} --metadata=${INPUT_BUILD}"
+    ARGS="${ARGS} --metadata=${BUILD}"
 fi
 
 if [[ "${INPUT_DIRECTORY}" != "" ]] && [[ "${INPUT_CMD}" == "next" ]] && [[ "${INPUT_LOGDIRECTORY}" == "" ]]; then
-    AFTER_ARGS="${AFTER_ARGS} --log.directory=${INPUT_DIRECTORY}"
+    ARGS="${ARGS} --log.directory=${DIRECTORY}"
 fi
 
 if [[ "${INPUT_FORCEPATCHINCREMENT}" == "true" ]] && [[ "${INPUT_CMD}" == "next" ]] && [[ "${INPUT_ALWAYS}" != "true" ]]; then
     ARGS="${ARGS} --always"
 fi
 
-NEXT=$(/bin/svu ${BEFORE_ARGS} ${INPUT_CMD} ${AFTER_ARGS})
+NEXT=$(/bin/svu ${INPUT_CMD} ${ARGS})
 echo "next=${NEXT}" >> "$GITHUB_OUTPUT"
 if [[ "${NEXT}" == "${CURRENT}" ]]; then
     echo "changed=false" >> "$GITHUB_OUTPUT"
