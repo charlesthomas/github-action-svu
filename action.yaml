@@ -131,4 +131,4 @@ outputs:
       and push the tag yourself outside of this step
 runs:
   using: docker
-  image: docker://ghcr.io/charlesthomas/github-action-svu:v1.1.0-3.1.0
+  image: docker://ghcr.io/charlesthomas/github-action-svu:v1.1.0-3.2.1
