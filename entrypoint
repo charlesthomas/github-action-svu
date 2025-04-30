@@ -68,7 +68,7 @@ fi
 
 # --prerelease
 if [[ "${INPUT_PRERELEASE}" != "" ]] && ( [[ "${INPUT_CMD}" == "next" ]] || [[ "${INPUT_CMD}" == "prerelease" ]] ); then
-    ARGS="${ARGS} --prerelease=${PRERELEASE}"
+    ARGS="${ARGS} --prerelease=${INPUT_PRERELEASE}"
 fi
 
 # --v0
