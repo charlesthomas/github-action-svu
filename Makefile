@@ -9,6 +9,10 @@ action.yaml: tmp/next ## update image version in action.yaml
 build-image: tmp/current ## build docker image
 	docker build -t ghcr.io/charlesthomas/github-action-svu:$(shell cat tmp/current | tr + -) .
 
+.PHONY: next
+next: tmp/next
+	@cat tmp/next
+
 tag: action.yaml ## use svu next to make a new tag and push it
 	git add action.yaml
 	git commit -m "chore: bump version in action.yaml to $(shell cat tmp/next)"
