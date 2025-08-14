@@ -1,5 +1,4 @@
 #!/bin/bash
-set -x
 
 # /github/workspace is where github actions always mounts the repo
 # it can't be changed, and this is required to prevent svu from throwing errors
