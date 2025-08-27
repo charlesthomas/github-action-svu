@@ -80,7 +80,7 @@ if [[ "${INPUT_PATTERN}" != "" ]] && [[ "${INPUT_TAGPATTERN}" == "" ]]; then
     ARGS="${ARGS} --tag.pattern=${PATTERN}"
 fi
 
-if [[ "${INPUT_PREFIX}" != "v" ]] && [[ "${INPUT_TAGPREFIX}" == "v" ]]; then
+if [[ "${INPUT_PREFIX}" != "" ]] && [[ "${INPUT_TAGPREFIX}" == "v" ]]; then
     ARGS="${ARGS} --tag.prefix=${PREFIX}"
 fi
 
