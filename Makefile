@@ -13,7 +13,7 @@ build-image: tmp/current ## build docker image
 next: tmp/next
 	@cat tmp/next
 
-tag: action.yaml ## use svu next to make a new tag and push it
+tag: clean action.yaml ## use svu next to make a new tag and push it
 	git add action.yaml
 	git commit -m "chore: bump version in action.yaml to $(shell cat tmp/next)"
 	git push
