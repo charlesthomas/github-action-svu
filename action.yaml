@@ -128,7 +128,7 @@ outputs:
       the next version, if any cmd other than `current` was used
       eg `svu next`, `svu prerelease`, `svu major`, etc
   next_json:
-    descrription: |-
+    description: |-
       the next version in json, if any cmd other than `current` was used
       eg `svu next --json`, `svu prerelease --json`, `svu major --json`, etc
   changed:
