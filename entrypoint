@@ -10,17 +10,6 @@ elif [[ "${INPUT_UNSHALLOW}" == "true" ]]; then
     git fetch --unshallow
 fi
 
-CURRENT=$(/bin/svu current)
-CURRENT_JSON=$(/bin/svu current --json)
-echo "current=${CURRENT}" >> "$GITHUB_OUTPUT"
-echo "current_json=${CURRENT_JSON}" >> "$GITHUB_OUTPUT"
-if [[ "${INPUT_CMD}" == "current" ]]; then
-    echo "next=${CURRENT}" >> "$GITHUB_OUTPUT"
-    echo "next_json=${CURRENT_JSON}" >> "$GITHUB_OUTPUT"
-    echo "changed=false" >> "$GITHUB_OUTPUT"
-    exit 0
-fi
-
 ARGS=""
 
 # v3 Inputs
@@ -46,6 +35,17 @@ if [[ "${INPUT_TAGPREFIX}" != "v" ]]; then
     ARGS="${ARGS} --tag.prefix=${INPUT_TAGPREFIX}"
 fi
 
+CURRENT=$(/bin/svu current ${ARGS})
+CURRENT_JSON=$(/bin/svu current --json ${ARGS})
+echo "current=${CURRENT}" >> "$GITHUB_OUTPUT"
+echo "current_json=${CURRENT_JSON}" >> "$GITHUB_OUTPUT"
+if [[ "${INPUT_CMD}" == "current" ]]; then
+    echo "next=${CURRENT}" >> "$GITHUB_OUTPUT"
+    echo "next_json=${CURRENT_JSON}" >> "$GITHUB_OUTPUT"
+    echo "changed=false" >> "$GITHUB_OUTPUT"
+    exit 0
+fi
+
 # --verbose
 if [[ "${INPUT_VERBOSE}" == "true" ]]; then
     ARGS="${ARGS} --verbose"
@@ -60,12 +60,12 @@ fi
 
 # --log.directory
 if [[ "${INPUT_LOGDIRECTORY}" != "" ]] && ( [[ "${INPUT_CMD}" == "next" ]] || [[ "${INPUT_CMD}" == "prerelease" ]] ); then
-    ARGS="${ARGS} --log.directory=${LOGDIRECTORY}"
+    ARGS="${ARGS} --log.directory=${INPUT_LOGDIRECTORY}"
 fi
 
 # --metadata
 if [[ "${INPUT_CMD}" == "next" ]] && [[ "${INPUT_METADATA}" != "" ]]; then
-    ARGS="${ARGS} --metadata=${METADATA}"
+    ARGS="${ARGS} --metadata=${INPUT_METADATA}"
 fi
 
 # --prerelease
@@ -80,19 +80,19 @@ fi
 
 # legacy Inputs
 if [[ "${INPUT_PATTERN}" != "" ]] && [[ "${INPUT_TAGPATTERN}" == "" ]]; then
-    ARGS="${ARGS} --tag.pattern=${PATTERN}"
+    ARGS="${ARGS} --tag.pattern=${INPUT_PATTERN}"
 fi
 
 if [[ "${INPUT_PREFIX}" != "" ]] && [[ "${INPUT_TAGPREFIX}" == "v" ]]; then
-    ARGS="${ARGS} --tag.prefix=${PREFIX}"
+    ARGS="${ARGS} --tag.prefix=${INPUT_PREFIX}"
 fi
 
 if [[ "${INPUT_BUILD}" != "" ]] && [[ "${INPUT_CMD}" == "next" ]] && [[ "${INPUT_METADATA}" == "" ]]; then
-    ARGS="${ARGS} --metadata=${BUILD}"
+    ARGS="${ARGS} --metadata=${INPUT_BUILD}"
 fi
 
 if [[ "${INPUT_DIRECTORY}" != "" ]] && [[ "${INPUT_CMD}" == "next" ]] && [[ "${INPUT_LOGDIRECTORY}" == "" ]]; then
-    ARGS="${ARGS} --log.directory=${DIRECTORY}"
+    ARGS="${ARGS} --log.directory=${INPUT_DIRECTORY}"
 fi
 
 if [[ "${INPUT_FORCEPATCHINCREMENT}" == "true" ]] && [[ "${INPUT_CMD}" == "next" ]] && [[ "${INPUT_ALWAYS}" != "true" ]]; then
@@ -102,7 +102,7 @@ fi
 NEXT=$(/bin/svu ${INPUT_CMD} ${ARGS})
 NEXT_JSON=$(/bin/svu ${INPUT_CMD} --json ${ARGS})
 echo "next=${NEXT}" >> "$GITHUB_OUTPUT"
-echo "next_JSON=${NEXT_JSON}" >> "$GITHUB_OUTPUT"
+echo "next_json=${NEXT_JSON}" >> "$GITHUB_OUTPUT"
 if [[ "${NEXT}" == "${CURRENT}" ]]; then
     echo "changed=false" >> "$GITHUB_OUTPUT"
 else
