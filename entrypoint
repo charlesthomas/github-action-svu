@@ -12,8 +12,6 @@ fi
 
 ARGS=""
 
-# v3 Inputs
-
 # global flags
 
 # --tag.mode
@@ -35,6 +33,7 @@ if [[ "${INPUT_TAGPREFIX}" != "v" ]]; then
     ARGS="${ARGS} --tag.prefix=${INPUT_TAGPREFIX}"
 fi
 
+# legacy global flags
 if [[ "${INPUT_PATTERN}" != "" ]] && [[ "${INPUT_TAGPATTERN}" == "" ]]; then
     ARGS="${ARGS} --tag.pattern=${INPUT_PATTERN}"
 fi
