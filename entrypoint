@@ -35,6 +35,14 @@ if [[ "${INPUT_TAGPREFIX}" != "v" ]]; then
     ARGS="${ARGS} --tag.prefix=${INPUT_TAGPREFIX}"
 fi
 
+if [[ "${INPUT_PATTERN}" != "" ]] && [[ "${INPUT_TAGPATTERN}" == "" ]]; then
+    ARGS="${ARGS} --tag.pattern=${INPUT_PATTERN}"
+fi
+
+if [[ "${INPUT_PREFIX}" != "" ]] && [[ "${INPUT_TAGPREFIX}" == "v" ]]; then
+    ARGS="${ARGS} --tag.prefix=${INPUT_PREFIX}"
+fi
+
 CURRENT=$(/bin/svu current ${ARGS})
 CURRENT_JSON=$(/bin/svu current --json ${ARGS})
 echo "current=${CURRENT}" >> "$GITHUB_OUTPUT"
@@ -79,14 +87,6 @@ if [[ "${INPUT_CMD}" == "next" ]] && [[ "${INPUT_V0}" != "false" ]]; then
 fi
 
 # legacy Inputs
-if [[ "${INPUT_PATTERN}" != "" ]] && [[ "${INPUT_TAGPATTERN}" == "" ]]; then
-    ARGS="${ARGS} --tag.pattern=${INPUT_PATTERN}"
-fi
-
-if [[ "${INPUT_PREFIX}" != "" ]] && [[ "${INPUT_TAGPREFIX}" == "v" ]]; then
-    ARGS="${ARGS} --tag.prefix=${INPUT_PREFIX}"
-fi
-
 if [[ "${INPUT_BUILD}" != "" ]] && [[ "${INPUT_CMD}" == "next" ]] && [[ "${INPUT_METADATA}" == "" ]]; then
     ARGS="${ARGS} --metadata=${INPUT_BUILD}"
 fi
